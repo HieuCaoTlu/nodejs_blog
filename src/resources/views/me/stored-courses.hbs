@@ -1,29 +1,40 @@
 <form class="mt-4" name="container-form" method="POST" action="/courses/handle-form-actions">
     <h3>Khóa học của tôi</h3>
     <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
-
     <div class="mt-4 d-flex align-items-center">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
-          <label class="form-check-label" for="checkbox-all">
-            Chọn tất cả
-          </label>
-        </div>
+        
         <select class="form-control form-control-sm checkbox-select-all-options" name="action" required="true">
           <option value="">-- Hành động --</option>
           <option value="delete">Xóa</option>
           <option value="forceDelete">Xóa vĩnh viễn</option>
         </select>
 
-        <button class="btn btn-primary btn-sm check-all-submit-btn disabled ">Thực hiện</button>
+        <button class="btn btn-primary btn-sm check-all-submit-btn" disabled="disabled">Thực hiện</button>
     </div>
     <table class="table mt-4">
         <thead>
             <tr>
-                <th scope="col" colspan="2">#</th>
-                <th scope="col">Tên khóa học</th>
-                <th scope="col">Trình độ</th>
-                <th scope="col">Thời gian tạo</th>
+                <th scope="col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                  </div>
+                </th>
+                <th scope="col">
+                  ID
+                  {{{sortable '_id' _sort}}}
+                </th>
+                <th scope="col">
+                  Tên khóa học
+                  {{{sortable 'name' _sort}}}
+                </th>
+                <th scope="col">
+                  Trình độ
+                  {{{sortable 'level' _sort}}}
+                </th>
+                <th scope="col">
+                  Thời gian tạo
+                  {{{sortable 'createdAt' _sort}}}
+                </th>
                 <th scope="col"></th>
                 </tr>
         </thead>
@@ -35,7 +46,7 @@
                         <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
                     </div>
                 </td>
-                <th scope="row">{{sum @index 1}}</th>
+                <th scope="row">{{this._id}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.level}}</td>
                 <td>{{this.createdAt}}</td>
@@ -130,9 +141,9 @@
         function renderCheckAllSubmitBtn() {
             var checkedCount = $('input[name="courseIds[]"]:checked').length;
             if (checkedCount && actionHasValue) {
-                checkAllSubmitBtn.removeClass('disabled');
+                checkAllSubmitBtn.attr('disabled', false);
             } else {
-                checkAllSubmitBtn.addClass('disabled');
+                checkAllSubmitBtn.attr('disabled', true);
             }
         }
 

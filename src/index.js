@@ -6,6 +6,8 @@ const handlebars = require('express-handlebars');
 const app = express();
 const port = 3000;
 
+const SortMiddleware = require('./app/middleware/sortMiddleware');
+
 const route = require('./routes');
 const db = require('./config/db');
 
@@ -17,14 +19,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 
+// Custom Middleware
+app.use(SortMiddleware);
+
 //Template Engine
 app.engine(
     'hbs',
     handlebars({
         extname: '.hbs',
-        helpers: {
-            sum: (a, b) => a + b,
-        },
+        helpers: require('./helpers/handlebars'),
     }),
 );
 app.set('view engine', 'hbs');
